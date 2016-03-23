@@ -1,6 +1,8 @@
 import React from 'react';
 import Mindmap from '../components/mindmap/Mindmap';
 import Dialog from '../components/dialog/Dialog';
+import Node from '../components/Note';
+import Drag from '../components/Drag';
 
 export default class About extends React.Component {
     constructor(props) {
@@ -60,6 +62,7 @@ export default class About extends React.Component {
     }
 
 	render() {
+        console.log('About render');
 		return (
             <div>
                 <h3>{this.state.title}</h3>
@@ -72,7 +75,12 @@ export default class About extends React.Component {
                     onEdit={this.onEdit}
                     onAdd={this.onAdd}
                     onDelete={this.onDelete} />
-                <Dialog data={this.state.editDialog} onClose={this.onCloseDilog.bind(this)} open={this.state.editDialog.open} />
+                {this.state.editDialog.open ? <Dialog data={this.state.editDialog}
+                    onClose={this.onCloseDilog.bind(this)}
+                    open={this.state.editDialog.open} />
+                    : ''}
+                <Drag />}
+                
             </div>
         );
 	}
@@ -83,7 +91,7 @@ export default class About extends React.Component {
             editDialog: {
                 open: true,
                 title: node.id,
-                content: node.name
+                content: <Node task={node.name} />
             }
         });
     }

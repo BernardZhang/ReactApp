@@ -1,7 +1,8 @@
 import './dialog.less';
 import React from 'react';
+import Drag from '../Drag';
 
-export default class Dialog extends React.Component {
+export default class Dialog extends /*React.Component*/Drag {
     constructor(props) {
         super(props);
     }
@@ -10,13 +11,10 @@ export default class Dialog extends React.Component {
         var open = this.props.open;
         var {data, open, onClose} = this.props;
 
-        if (!open) {
-            return null;
-        }
         return (
             <div className={'dialog-mask animated' + (open ? ' fadeIn' : ' fadeOut')} ref="dialog">
-                <div className="dialog">
-                    <div className="dialog-header">
+                <div className="dialog" ref="target">
+                    <div ref="drag" className="dialog-header">
                         <h3>{data.title}</h3>
                         <span className="close-icon" onClick={this.onClose.bind(this)}>x</span>
                     </div>
@@ -32,8 +30,15 @@ export default class Dialog extends React.Component {
 
     componentDidMount() {
         if (this.refs.dialog) {
+            this.drag(this.refs.drag, this.refs.target);
+            console.log(':) drag', this.refs.drag, this.refs.target);
+            this.drag(this.refs.drag, this.refs.target);
             this.refs.dialog.addEventListener('animationend', this.animationDone.bind(this), false);    
         }
+    }
+
+    componentDidUpdate() {
+        console.log('will did update');
     }
 
     componentWillUnmount() {
@@ -43,7 +48,12 @@ export default class Dialog extends React.Component {
     }
 
     animationDone() {
-        this.refs.dialog.style.cssText += 'display: ' + (this.state.open ? 'block' : 'none');
+        console.log(':) animationDone');
+        this.refs.dialog.style.cssText += 'display: ' + (this.props.open ? 'block' : 'none');
+    }
+
+    onDrag() {
+        console.log('onDrag', arguments);
     }
 
     onClose() {
