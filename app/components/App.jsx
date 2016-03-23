@@ -1,24 +1,38 @@
 import React from 'react';
-import Header from './Header';
+import Header from './header/Header';
+import About from '../views/About';
 
-export default class App extends React.Component {
-    getInitialState() {
-        return {
-            notes: [
-                {
-                    id: 1,
-                    task: 'Learn Webpack'
-                }
-            ]
-        };
+class App extends React.Component {
+    constructor(props) {
+        super(props);
     }
 
     render() {
+        var items = [
+            {
+                to: '/about',
+                name: 'About'
+            },
+            {
+                to: '/inbox',
+                name: 'Inbox'
+            },
+            {
+                to: '/message',
+                name: 'Message'
+            },
+            {
+                to: '/test',
+                name: 'Test'
+            }
+        ];
         return (
             <div className="app-container">
-                <Header selectedItem={this.props.location.pathname}/>
-                {this.props.children || this.props.default}
+                <Header items={items} selectedItem={this.props.location.pathname}/>
+                {this.props.children || this.props.default || <About/>}
             </div>
         );
     }
 }
+
+module.exports = App;

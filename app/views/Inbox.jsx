@@ -1,13 +1,14 @@
 import React from 'react';
 // import uuid from 'node-uuid';
 import Notes from '../components/Notes';
-import Cube from '../components/Cube';
+import Cube from '../components/cube/Cube';
 
 export default class Inbox extends React.Component {
 	constructor(props) {
 		debugger;
-		console.log(arguments);
-		super();
+		
+		super(props);
+		console.log(this.props);
 		this.state = {
 			notes: [
 				{

@@ -1,26 +1,13 @@
-import '../css/header.less';
+import './header.less';
 import React from 'react';
 import { Link } from 'react-router';
 
 export default class Header extends React.Component {
 	constructor(props) {
-		super();
+		super(props);
 		this.state = {
-			current: props.selectedItem || '/about',
-			items: [
-				{
-					to: '/about',
-					name: 'About'
-				},
-				{
-					to: '/inbox',
-					name: 'Inbox'
-				},
-				{
-					to: '/message/1',
-					name: 'Message'
-				}
-			]
+			current: props.selectedItem === '/' ? '/about' : props.selectedItem,
+			items: props.items
 		};
 	}
 	render() {

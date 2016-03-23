@@ -134,7 +134,7 @@ if(TARGET === 'start' || !TARGET) {
 
       // Parse host and port from env so this is easy to customize.
       host: process.env.HOST,
-      port: '8099'
+      port: '8091'//process.env.PORT
     },
     devtool: 'eval-source-map',
     

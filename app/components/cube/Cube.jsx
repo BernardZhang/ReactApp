@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/cube.less';
+import './cube.less';
 
 export default class Cube extends React.Component {
     constructor(props) {
