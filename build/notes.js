@@ -6,57 +6,12 @@ webpackJsonp([7],{
   \*******************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! /Users/baidu/Desktop/Demo/ReactApp/app/components/Notes.jsx */227);
+	module.exports = __webpack_require__(/*! /Users/baidu/Desktop/Demo/ReactApp/app/components/Notes.jsx */234);
 
 
 /***/ },
 
-/***/ 227:
-/*!**********************************!*\
-  !*** ./app/components/Notes.jsx ***!
-  \**********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _Note = __webpack_require__(/*! ./Note.jsx */ 228);
-	
-	var _Note2 = _interopRequireDefault(_Note);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (_ref) {
-	    var notes = _ref.notes;
-	    var onEdit = _ref.onEdit;
-	    var onDelete = _ref.onDelete;
-	
-	    return _react2.default.createElement(
-	        'ul',
-	        null,
-	        notes.map(function (note) {
-	            return _react2.default.createElement(
-	                'li',
-	                { key: note.id },
-	                _react2.default.createElement(_Note2.default, {
-	                    task: note.task,
-	                    onEdit: onEdit.bind(null, note.id),
-	                    onDelete: onDelete.bind(null, note.id) })
-	            );
-	        })
-	    );
-	};
-
-/***/ },
-
-/***/ 228:
+/***/ 171:
 /*!*********************************!*\
   !*** ./app/components/Note.jsx ***!
   \*********************************/
@@ -165,6 +120,51 @@ webpackJsonp([7],{
 	}(_react2.default.Component);
 	
 	exports.default = Note;
+
+/***/ },
+
+/***/ 234:
+/*!**********************************!*\
+  !*** ./app/components/Notes.jsx ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Note = __webpack_require__(/*! ./Note.jsx */ 171);
+	
+	var _Note2 = _interopRequireDefault(_Note);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (_ref) {
+	    var notes = _ref.notes;
+	    var onEdit = _ref.onEdit;
+	    var onDelete = _ref.onDelete;
+	
+	    return _react2.default.createElement(
+	        'ul',
+	        null,
+	        notes.map(function (note) {
+	            return _react2.default.createElement(
+	                'li',
+	                { key: note.id },
+	                _react2.default.createElement(_Note2.default, {
+	                    task: note.task,
+	                    onEdit: onEdit.bind(null, note.id),
+	                    onDelete: onDelete.bind(null, note.id) })
+	            );
+	        })
+	    );
+	};
 
 /***/ }
 

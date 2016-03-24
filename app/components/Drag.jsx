@@ -37,18 +37,33 @@ export default class Drag extends React.Component {
     drag(target, moveElement) {
         var isMousedown = false;
         var pos = [];
+        var isTouch = 'ontouchstart' in document;
+        console.log(':) isTouch' + isTouch);
+        var EVENTS = {
+            MOUSEDOWN: isTouch ? 'touchstart' : 'mousedown',
+            MOUSEMOVE: isTouch ? 'touchmove' : 'mousemove',
+            MOUSEUP: isTouch ? 'touchend' : 'mouseup'
+        };
+        var getPosition = function (e) {
+            return {
+                pageX: e.pageX || e.touches[0].pageX,
+                pageY: e.pageY || e.touches[0].pageY
+            }
+        };
 
         var mousedownHandle = function (e) {
             console.log(':) mousedownHandle');
             isMousedown = true;
             console.log(e);
-            pos = [e.pageX, e.pageY];
-            document.addEventListener('mousemove', mousemoveHandle, false);
-            document.addEventListener('mouseup', mouseupHandle, false);
+            var posObj = getPosition(e);
+            var pos = [posObj.pageX, posObj.pageY];
+            document.addEventListener(EVENTS.MOUSEMOVE, mousemoveHandle, false);
+            document.addEventListener(EVENTS.MOUSEUP, mouseupHandle, false);
         };
         var mousemoveHandle = function (e) {
             if (isMousedown) {
-                var distance = [e.pageX - pos[0], e.pageY - pos[1]];
+                var posObj = getPosition(e);
+                var distance = [posObj.pageX - pos[0], posObj.pageY - pos[1]];
                 var style = window.getComputedStyle(moveElement);
                 var rectBox = moveElement.getBoundingClientRect();
                 var offset = [parseFloat(style.left), parseFloat(style.top)];
@@ -72,7 +87,6 @@ export default class Drag extends React.Component {
                     top -= rectBox.top + distance[1] - (window.innerHeight - rectBox.height);
                 }
 
-
                 // left = Math.max(left, 0);
                 // left = Math.min(left, window.innerWidth - rectBox.width);
 
@@ -81,18 +95,17 @@ export default class Drag extends React.Component {
 
                 moveElement.style.left = left + 'px';
                 moveElement.style.top = top + 'px';
-                pos = [e.pageX, e.pageY];
+                pos = [posObj.pageX, posObj.pageY];
                 console.log(':) mousemoveHandle', distance);
             }
         };
         var mouseupHandle = function (e) {
             console.log(': mouseupHandle');
-            pos = [e.pageX, e.pageY];
             isMousedown = false;
-            document.removeEventListener('mousemove', mousemoveHandle);
-            document.removeEventListener('mouseup', mouseupHandle);
+            document.removeEventListener(EVENTS.MOUSEMOVE, mousemoveHandle);
+            document.removeEventListener(EVENTS.MOUSEUP, mouseupHandle);
         };
-        target.addEventListener('mousedown', mousedownHandle, false);
+        target.addEventListener(EVENTS.MOUSEDOWN, mousedownHandle, false);
         // document.addEventListener('mouseup', mouseupHandle, false);
     }
 }

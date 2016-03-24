@@ -89,6 +89,7 @@ const common = {
     new HtmlwebpackPlugin({
       template: 'node_modules/html-webpack-template/index.html',
       title: 'ReactSPA',
+      mobile: true,
       appMountId: 'app',
       chunks: ['vendors', 'jquery', 'app']
     }),
@@ -119,7 +120,7 @@ const common = {
 //   common.module.noParse.push(depPath);
 // });
 
-console.log(process.env.PORT);
+console.log(process.env.HOST, process.env.PORT);
 // Default configuration
 if(TARGET === 'start' || !TARGET) {
   module.exports = merge(common, {

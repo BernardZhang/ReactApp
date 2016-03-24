@@ -6,7 +6,7 @@ webpackJsonp([4,2],{
   \*******************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! /Users/baidu/Desktop/Demo/ReactApp/app/views/Inbox.jsx */226);
+	module.exports = __webpack_require__(/*! /Users/baidu/Desktop/Demo/ReactApp/app/views/Inbox.jsx */233);
 
 
 /***/ },
@@ -329,177 +329,7 @@ webpackJsonp([4,2],{
 
 /***/ },
 
-/***/ 226:
-/*!*****************************!*\
-  !*** ./app/views/Inbox.jsx ***!
-  \*****************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _react = __webpack_require__(/*! react */ 2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _Notes = __webpack_require__(/*! ../components/Notes */ 227);
-	
-	var _Notes2 = _interopRequireDefault(_Notes);
-	
-	var _Cube = __webpack_require__(/*! ../components/cube/Cube */ 229);
-	
-	var _Cube2 = _interopRequireDefault(_Cube);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import uuid from 'node-uuid';
-	
-	var Inbox = function (_React$Component) {
-		_inherits(Inbox, _React$Component);
-	
-		function Inbox(props) {
-			var _arguments = arguments;
-	
-			_classCallCheck(this, Inbox);
-	
-			debugger;
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Inbox).call(this, props));
-	
-			_this.onEdit = function (id, task) {
-				if (task === '') {
-					return;
-				}
-				console.log('Inbox: onEdit', _arguments, _this);
-				var notes = _this.state.notes.map(function (note) {
-					if (note.id === id) {
-						note.task = task;
-					}
-	
-					return note;
-				});
-				_this.setState({ notes: notes });
-			};
-	
-			_this.onDelete = function (id) {
-				console.log('Inbox: onDelete', _arguments, _this);
-				_this.setState({
-					notes: _this.state.notes.filter(function (note) {
-						return note.id !== id;
-					})
-				});
-			};
-	
-			_this.addNote = function (e) {
-				_this.setState({
-					notes: [].concat(_toConsumableArray(_this.state.notes), [{
-						id: _this.state.notes.length + 1,
-						task: 'New Task'
-					}])
-				});
-			};
-	
-			console.log(_this.props);
-			_this.state = {
-				notes: [{
-					id: 1,
-					task: 'Learn React'
-				}, {
-					id: 2,
-					task: 'Learn Webpack'
-				}]
-			};
-			return _this;
-		}
-	
-		_createClass(Inbox, [{
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						'h3',
-						null,
-						'Inbox'
-					),
-					_react2.default.createElement(
-						'button',
-						{ onClick: this.addNote },
-						'+'
-					),
-					_react2.default.createElement(_Notes2.default, { notes: this.state.notes, onEdit: this.onEdit, onDelete: this.onDelete }),
-					_react2.default.createElement(_Cube2.default, null)
-				);
-			}
-		}]);
-	
-		return Inbox;
-	}(_react2.default.Component);
-	
-	exports.default = Inbox;
-
-/***/ },
-
-/***/ 227:
-/*!**********************************!*\
-  !*** ./app/components/Notes.jsx ***!
-  \**********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _react = __webpack_require__(/*! react */ 2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _Note = __webpack_require__(/*! ./Note.jsx */ 228);
-	
-	var _Note2 = _interopRequireDefault(_Note);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	exports.default = function (_ref) {
-	    var notes = _ref.notes;
-	    var onEdit = _ref.onEdit;
-	    var onDelete = _ref.onDelete;
-	
-	    return _react2.default.createElement(
-	        'ul',
-	        null,
-	        notes.map(function (note) {
-	            return _react2.default.createElement(
-	                'li',
-	                { key: note.id },
-	                _react2.default.createElement(_Note2.default, {
-	                    task: note.task,
-	                    onEdit: onEdit.bind(null, note.id),
-	                    onDelete: onDelete.bind(null, note.id) })
-	            );
-	        })
-	    );
-	};
-
-/***/ },
-
-/***/ 228:
+/***/ 171:
 /*!*********************************!*\
   !*** ./app/components/Note.jsx ***!
   \*********************************/
@@ -611,7 +441,177 @@ webpackJsonp([4,2],{
 
 /***/ },
 
-/***/ 229:
+/***/ 233:
+/*!*****************************!*\
+  !*** ./app/views/Inbox.jsx ***!
+  \*****************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = undefined;
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Notes = __webpack_require__(/*! ../components/Notes */ 234);
+	
+	var _Notes2 = _interopRequireDefault(_Notes);
+	
+	var _Cube = __webpack_require__(/*! ../components/cube/Cube */ 235);
+	
+	var _Cube2 = _interopRequireDefault(_Cube);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import uuid from 'node-uuid';
+	
+	var Inbox = function (_React$Component) {
+		_inherits(Inbox, _React$Component);
+	
+		function Inbox(props) {
+			var _arguments = arguments;
+	
+			_classCallCheck(this, Inbox);
+	
+			debugger;
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Inbox).call(this, props));
+	
+			_this.onEdit = function (id, task) {
+				if (task === '') {
+					return;
+				}
+				console.log('Inbox: onEdit', _arguments, _this);
+				var notes = _this.state.notes.map(function (note) {
+					if (note.id === id) {
+						note.task = task;
+					}
+	
+					return note;
+				});
+				_this.setState({ notes: notes });
+			};
+	
+			_this.onDelete = function (id) {
+				console.log('Inbox: onDelete', _arguments, _this);
+				_this.setState({
+					notes: _this.state.notes.filter(function (note) {
+						return note.id !== id;
+					})
+				});
+			};
+	
+			_this.addNote = function (e) {
+				_this.setState({
+					notes: [].concat(_toConsumableArray(_this.state.notes), [{
+						id: _this.state.notes.length + 1,
+						task: 'New Task'
+					}])
+				});
+			};
+	
+			console.log(_this.props);
+			_this.state = {
+				notes: [{
+					id: 1,
+					task: 'Learn React'
+				}, {
+					id: 2,
+					task: 'Learn Webpack'
+				}]
+			};
+			return _this;
+		}
+	
+		_createClass(Inbox, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'h3',
+						null,
+						'Inbox'
+					),
+					_react2.default.createElement(
+						'button',
+						{ onClick: this.addNote },
+						'+'
+					),
+					_react2.default.createElement(_Notes2.default, { notes: this.state.notes, onEdit: this.onEdit, onDelete: this.onDelete }),
+					_react2.default.createElement(_Cube2.default, null)
+				);
+			}
+		}]);
+	
+		return Inbox;
+	}(_react2.default.Component);
+	
+	exports.default = Inbox;
+
+/***/ },
+
+/***/ 234:
+/*!**********************************!*\
+  !*** ./app/components/Notes.jsx ***!
+  \**********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Note = __webpack_require__(/*! ./Note.jsx */ 171);
+	
+	var _Note2 = _interopRequireDefault(_Note);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	exports.default = function (_ref) {
+	    var notes = _ref.notes;
+	    var onEdit = _ref.onEdit;
+	    var onDelete = _ref.onDelete;
+	
+	    return _react2.default.createElement(
+	        'ul',
+	        null,
+	        notes.map(function (note) {
+	            return _react2.default.createElement(
+	                'li',
+	                { key: note.id },
+	                _react2.default.createElement(_Note2.default, {
+	                    task: note.task,
+	                    onEdit: onEdit.bind(null, note.id),
+	                    onDelete: onDelete.bind(null, note.id) })
+	            );
+	        })
+	    );
+	};
+
+/***/ },
+
+/***/ 235:
 /*!**************************************!*\
   !*** ./app/components/cube/Cube.jsx ***!
   \**************************************/
@@ -630,7 +630,7 @@ webpackJsonp([4,2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	__webpack_require__(/*! ./cube.less */ 230);
+	__webpack_require__(/*! ./cube.less */ 236);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -677,7 +677,7 @@ webpackJsonp([4,2],{
 
 /***/ },
 
-/***/ 230:
+/***/ 236:
 /*!***************************************!*\
   !*** ./app/components/cube/cube.less ***!
   \***************************************/
@@ -686,7 +686,7 @@ webpackJsonp([4,2],{
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/less-loader!./cube.less */ 231);
+	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/less-loader!./cube.less */ 237);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(/*! ./../../../~/style-loader/addStyles.js */ 163)(content, {});
@@ -707,7 +707,7 @@ webpackJsonp([4,2],{
 
 /***/ },
 
-/***/ 231:
+/***/ 237:
 /*!**********************************************************************!*\
   !*** ./~/css-loader!./~/less-loader!./app/components/cube/cube.less ***!
   \**********************************************************************/

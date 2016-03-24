@@ -34,6 +34,18 @@ webpackJsonp([0],{
 	
 	var _Mindmap2 = _interopRequireDefault(_Mindmap);
 	
+	var _Dialog = __webpack_require__(/*! ../components/dialog/Dialog */ 167);
+	
+	var _Dialog2 = _interopRequireDefault(_Dialog);
+	
+	var _Note = __webpack_require__(/*! ../components/Note */ 171);
+	
+	var _Note2 = _interopRequireDefault(_Note);
+	
+	var _Drag = __webpack_require__(/*! ../components/Drag */ 170);
+	
+	var _Drag2 = _interopRequireDefault(_Drag);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -53,7 +65,12 @@ webpackJsonp([0],{
 	        console.log('About constructor', props);
 	        _this.state = {
 	            title: 'About',
-	            mindmap: {}
+	            mindmap: {},
+	            editDialog: {
+	                open: false,
+	                title: '',
+	                content: ''
+	            }
 	        };
 	        return _this;
 	    }
@@ -74,7 +91,15 @@ webpackJsonp([0],{
 	                        name: 'node11',
 	                        children: [{
 	                            id: '111',
-	                            name: 'node111'
+	                            name: 'node111',
+	                            children: [{
+	                                id: '1111',
+	                                name: 'node-1111',
+	                                children: [{
+	                                    id: '11111',
+	                                    name: 'node-11111'
+	                                }]
+	                            }]
 	                        }, {
 	                            id: '112',
 	                            name: 'node112'
@@ -82,15 +107,12 @@ webpackJsonp([0],{
 	                    }]
 	                }
 	            });
-	            debugger;
 	            console.log('about componentDidMount');
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            debugger;
-	            console.log('about render', this.state.mindmap);
-	
+	            console.log('About render');
 	            return _react2.default.createElement(
 	                'div',
 	                null,
@@ -99,8 +121,57 @@ webpackJsonp([0],{
 	                    null,
 	                    this.state.title
 	                ),
-	                _react2.default.createElement(_Mindmap2.default, { data: this.state.mindmap })
+	                _react2.default.createElement(_Mindmap2.default, {
+	                    data: this.state.mindmap,
+	                    singleSelection: true,
+	                    expand: true,
+	                    expandLevel: 2,
+	                    onSelect: this.onSelect.bind(this),
+	                    onEdit: this.onEdit,
+	                    onAdd: this.onAdd,
+	                    onDelete: this.onDelete }),
+	                this.state.editDialog.open ? _react2.default.createElement(_Dialog2.default, { data: this.state.editDialog,
+	                    onClose: this.onCloseDilog.bind(this),
+	                    open: this.state.editDialog.open }) : '',
+	                _react2.default.createElement(_Drag2.default, null),
+	                '}'
 	            );
+	        }
+	    }, {
+	        key: 'onSelect',
+	        value: function onSelect(node) {
+	            this.setState({
+	                mindmap: this.state.mindmap,
+	                editDialog: {
+	                    open: true,
+	                    title: node.id,
+	                    content: _react2.default.createElement(_Note2.default, { task: node.name })
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'onEdit',
+	        value: function onEdit(node) {
+	            console.log(node);
+	        }
+	    }, {
+	        key: 'onAdd',
+	        value: function onAdd(node) {
+	            console.log(node);
+	        }
+	    }, {
+	        key: 'onDelete',
+	        value: function onDelete(node) {
+	            console.log(node);
+	        }
+	    }, {
+	        key: 'onCloseDilog',
+	        value: function onCloseDilog() {
+	            this.setState({
+	                editDialog: {
+	                    open: false
+	                }
+	            });
 	        }
 	    }]);
 	
@@ -136,7 +207,7 @@ webpackJsonp([0],{
 	
 	var _Node2 = _interopRequireDefault(_Node);
 	
-	var _NodeList = __webpack_require__(/*! ./NodeList */ 165);
+	var _NodeList = __webpack_require__(/*! ./NodeList */ 166);
 	
 	var _NodeList2 = _interopRequireDefault(_NodeList);
 	
@@ -154,20 +225,83 @@ webpackJsonp([0],{
 	    function Mindmap(props) {
 	        _classCallCheck(this, Mindmap);
 	
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Mindmap).call(this, props));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Mindmap).call(this, props));
+	
+	        _this.state = {
+	            expand: _this.props.expand
+	        };
+	        return _this;
 	    }
 	
 	    _createClass(Mindmap, [{
 	        key: 'render',
 	        value: function render() {
-	            var rootNode = this.props.data;
+	            var _props = this.props;
+	            var data = _props.data;
+	            var expand = _props.expand;
+	            var expandLevel = _props.expandLevel;
+	            var onSelect = _props.onSelect;
+	            var onMouseup = _props.onMouseup;
+	            var onEdit = _props.onEdit;
+	            var onAdd = _props.onAdd;
+	            var onDelete = _props.onDelete;
+	
+	            var level = 1;
+	
+	            expand = typeof data.expand !== 'undefined' ? !!data.expand : this.state.expand;
+	            if (typeof expandLevel !== 'undefined') {
+	                expand = expand && level < expandLevel;
+	            }
 	
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'mindmap' },
-	                _react2.default.createElement(_Node2.default, { isRoot: true, data: rootNode, expand: true }),
-	                _react2.default.createElement(_NodeList2.default, { nodes: rootNode.children, level: 1 })
+	                _react2.default.createElement(_Node2.default, { isRoot: true, data: data,
+	                    expand: expand,
+	                    expandLevel: expandLevel,
+	                    onSelect: this.onSelect.bind(this, data),
+	                    onEdit: onEdit,
+	                    onAdd: onAdd,
+	                    onDelete: onDelete }),
+	                _react2.default.createElement(_NodeList2.default, { nodes: data.children,
+	                    level: level,
+	                    expand: expand,
+	                    expandLevel: expandLevel,
+	                    onSelect: this.onSelect.bind(this),
+	                    onEdit: onEdit,
+	                    onAdd: onAdd,
+	                    onDelete: onDelete })
 	            );
+	        }
+	    }, {
+	        key: 'onSelect',
+	        value: function onSelect(node) {
+	            this.setActiveNode(node);
+	            if (typeof this.props.onSelect === 'function') {
+	                this.props.onSelect(node);
+	            }
+	        }
+	    }, {
+	        key: 'toggleExpand',
+	        value: function toggleExpand(isExpand, node) {
+	            this.setState({
+	                expand: isExpand
+	            });
+	        }
+	    }, {
+	        key: 'setActiveNode',
+	        value: function setActiveNode(node) {
+	            if (this.props.singleSelection && this.activeNode) {
+	                this.activeNode.active = false;
+	            }
+	            node.active = true;
+	            this.activeNode = node;
+	            return this;
+	        }
+	    }, {
+	        key: 'getActiveNode',
+	        value: function getActiveNode() {
+	            return this.activeNode;
 	        }
 	    }]);
 	
@@ -563,6 +697,10 @@ webpackJsonp([0],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactDom = __webpack_require__(/*! react-dom */ 165);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -588,18 +726,39 @@ webpackJsonp([0],{
 	    _createClass(Node, [{
 	        key: 'render',
 	        value: function render() {
-	            var node = this.props.data;
 	            var isRoot = !!this.props.isRoot;
+	            var _props = this.props;
+	            var data = _props.data;
+	            var onSelect = _props.onSelect;
+	            var onEdit = _props.onEdit;
+	            var onAdd = _props.onAdd;
+	            var onDelete = _props.onDelete;
+	
+	            var that = this;
+	            var getClassName = function getClassName(node, isRoot) {
+	                var className = ['node'];
+	
+	                if (isRoot) {
+	                    className.push('node_root');
+	                }
+	
+	                if (node.active) {
+	                    className.push('node_active');
+	                }
+	
+	                return className.join(' ');
+	            };
 	
 	            return _react2.default.createElement(
 	                'div',
-	                { className: 'node' + (isRoot ? ' node_root' : ''), 'node-id': this.props.id },
+	                { className: getClassName(data, isRoot), 'node-id': this.props.id },
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'node__text' },
-	                    node.name
+	                    { className: 'node__text',
+	                        onClick: this.onSelect.bind(this, data) },
+	                    data.name
 	                ),
-	                this.getToggleBtn(node, this.state.expand)
+	                this.getToggleBtn(data, this.state.expand)
 	            );
 	        }
 	    }, {
@@ -608,7 +767,7 @@ webpackJsonp([0],{
 	            if (node.children && node.children.length) {
 	                return _react2.default.createElement(
 	                    'span',
-	                    { className: 'toggle-btn' },
+	                    { className: 'toggle-btn', onClick: this.toggleExpand.bind(this, !expand, node) },
 	                    expand ? '-' : '+'
 	                );
 	            }
@@ -617,20 +776,30 @@ webpackJsonp([0],{
 	        }
 	    }, {
 	        key: 'toggleExpand',
-	        value: function toggleExpand(isExpand) {
-	            var isExpand = false;
-	
-	            if (typeof isExpand === 'undefined') {
-	                isExpand = !this.state.expand;
-	            } else {
-	                isExpand = !!isExpand;
-	            }
-	
+	        value: function toggleExpand(isExpand, node) {
+	            node.expand = isExpand;
 	            this.setState({
 	                expand: isExpand
 	            });
+	            var nodeList = _reactDom2.default.findDOMNode(this).nextElementSibling;
+	
+	            if (nodeList) {
+	                nodeList.style.cssText += 'display: ' + (isExpand ? 'inline-block' : 'none');
+	            }
+	
+	            if (typeof this.props.toggleExpand === 'function') {
+	                this.props.toggleExpand(isExpand, node);
+	            }
 	
 	            return this;
+	        }
+	    }, {
+	        key: 'onSelect',
+	        value: function onSelect(node) {
+	            node.active = true;
+	            if (typeof this.props.onSelect === 'function') {
+	                this.props.onSelect(node);
+	            }
 	        }
 	    }]);
 	
@@ -641,7 +810,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 165:
+/***/ 166:
 /*!*********************************************!*\
   !*** ./app/components/mindmap/NodeList.jsx ***!
   \*********************************************/
@@ -659,6 +828,10 @@ webpackJsonp([0],{
 	var _react = __webpack_require__(/*! react */ 2);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactDom = __webpack_require__(/*! react-dom */ 165);
+	
+	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
 	var _Node = __webpack_require__(/*! ./Node */ 164);
 	
@@ -684,27 +857,79 @@ webpackJsonp([0],{
 	    _createClass(NodeList, [{
 	        key: 'render',
 	        value: function render() {
-	            var nodes = this.props.nodes;
+	            var _this2 = this;
+	
+	            var _props = this.props;
+	            var nodes = _props.nodes;
+	            var expand = _props.expand;
+	            var level = _props.level;
+	            var expandLevel = _props.expandLevel;
+	            var onSelect = _props.onSelect;
+	            var onEdit = _props.onEdit;
+	            var onAdd = _props.onAdd;
+	            var onDelete = _props.onDelete;
 	
 	            if (nodes && nodes.length) {
-	                var level = this.props.level;
 	                var nodeList = nodes.map(function (node) {
 	                    return _react2.default.createElement(
 	                        'li',
 	                        { className: 'children__item', key: node.id },
-	                        _react2.default.createElement(_Node2.default, { data: node, expand: true }),
-	                        _react2.default.createElement(NodeList, { nodes: node.children, level: level + 1 })
+	                        _react2.default.createElement(_Node2.default, {
+	                            data: node,
+	                            expand: _this2.isExpand(node),
+	                            onSelect: onSelect,
+	                            onEdit: onEdit.bind(null, node),
+	                            onAdd: onAdd.bind(null, node),
+	                            onDelete: onDelete.bind(null, node) }),
+	                        _react2.default.createElement(NodeList, {
+	                            nodes: node.children,
+	                            expand: _this2.isExpand(node),
+	                            expandLevel: expandLevel,
+	                            level: level + 1,
+	                            onSelect: onSelect,
+	                            onEdit: onEdit.bind(null, node),
+	                            onAdd: onAdd.bind(null, node),
+	                            onDelete: onDelete.bind(null, node) })
 	                    );
 	                }, this);
+	                var style = {
+	                    display: expand ? 'inline-block' : 'none'
+	                };
+	                console.log('display: ' + style.display);
 	
 	                return _react2.default.createElement(
 	                    'ol',
-	                    { className: 'children level-' + level },
+	                    { className: 'children level-' + level, style: style },
 	                    nodeList
 	                );
 	            }
 	
 	            return null;
+	        }
+	    }, {
+	        key: 'toggleExpand',
+	        value: function toggleExpand(expand, node) {
+	            var nodeList = _reactDom2.default.findDOMNode(this);
+	            node.expand = expand;
+	            if (typeof this.props.toggleExpand === 'function') {
+	                this.props.toggleExpand(expand, node);
+	            }
+	        }
+	    }, {
+	        key: 'isExpand',
+	        value: function isExpand(node) {
+	            var _props2 = this.props;
+	            var expand = _props2.expand;
+	            var level = _props2.level;
+	            var expandLevel = _props2.expandLevel;
+	
+	            var isExpand = typeof node.expand !== 'undefined' ? !!node.expand : expand;
+	
+	            if (typeof expandLevel !== 'undefined') {
+	                isExpand = isExpand && level < expandLevel;
+	            }
+	
+	            return isExpand;
 	        }
 	    }]);
 	
@@ -712,6 +937,460 @@ webpackJsonp([0],{
 	}(_react2.default.Component);
 	
 	exports.default = NodeList;
+
+/***/ },
+
+/***/ 167:
+/*!******************************************!*\
+  !*** ./app/components/dialog/Dialog.jsx ***!
+  \******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	__webpack_require__(/*! ./dialog.less */ 168);
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Drag2 = __webpack_require__(/*! ../Drag */ 170);
+	
+	var _Drag3 = _interopRequireDefault(_Drag2);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Dialog = function (_Drag) {
+	    _inherits(Dialog, _Drag);
+	
+	    function Dialog(props) {
+	        _classCallCheck(this, Dialog);
+	
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Dialog).call(this, props));
+	    }
+	
+	    _createClass(Dialog, [{
+	        key: 'render',
+	        value: function render() {
+	            var open = this.props.open;
+	            var _props = this.props;
+	            var data = _props.data;
+	            var open = _props.open;
+	            var onClose = _props.onClose;
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'dialog-mask animated' + (open ? ' fadeIn' : ' fadeOut'), ref: 'dialog' },
+	                _react2.default.createElement(
+	                    'div',
+	                    { className: 'dialog', ref: 'target' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { ref: 'drag', className: 'dialog-header' },
+	                        _react2.default.createElement(
+	                            'h3',
+	                            null,
+	                            data.title
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'close-icon', onClick: this.onClose.bind(this) },
+	                            'x'
+	                        )
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'dialog-body' },
+	                        data.content
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'dialog-footer' },
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'button', onClick: this.onConfirm.bind(this) },
+	                            data.confirmText || '确定'
+	                        ),
+	                        _react2.default.createElement(
+	                            'span',
+	                            { className: 'button', onClick: this.onCancel.bind(this) },
+	                            data.cancelText || '取消'
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            if (this.refs.dialog) {
+	                this.drag(this.refs.drag, this.refs.target);
+	                console.log(':) drag', this.refs.drag, this.refs.target);
+	                this.drag(this.refs.drag, this.refs.target);
+	                this.refs.dialog.addEventListener('animationend', this.animationDone.bind(this), false);
+	            }
+	        }
+	    }, {
+	        key: 'componentDidUpdate',
+	        value: function componentDidUpdate() {
+	            console.log('will did update');
+	        }
+	    }, {
+	        key: 'componentWillUnmount',
+	        value: function componentWillUnmount() {
+	            if (this.refs.dialog) {
+	                this.refs.dialog.removeEventListener('animationend', this.animationDone.bind(this), false);
+	            }
+	        }
+	    }, {
+	        key: 'animationDone',
+	        value: function animationDone() {
+	            console.log(':) animationDone');
+	            this.refs.dialog.style.cssText += 'display: ' + (this.props.open ? 'block' : 'none');
+	        }
+	    }, {
+	        key: 'onDrag',
+	        value: function onDrag() {
+	            console.log('onDrag', arguments);
+	        }
+	    }, {
+	        key: 'onClose',
+	        value: function onClose() {
+	            this.close();
+	        }
+	    }, {
+	        key: 'onConfirm',
+	        value: function onConfirm() {
+	            this.close();
+	        }
+	    }, {
+	        key: 'onCancel',
+	        value: function onCancel() {
+	            this.close();
+	        }
+	    }, {
+	        key: 'close',
+	        value: function close() {
+	            this.props.onClose && this.props.onClose();
+	        }
+	    }]);
+	
+	    return Dialog;
+	}( /*React.Component*/_Drag3.default);
+	
+	exports.default = Dialog;
+
+/***/ },
+
+/***/ 168:
+/*!*******************************************!*\
+  !*** ./app/components/dialog/dialog.less ***!
+  \*******************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/less-loader!./dialog.less */ 169);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(/*! ./../../../~/style-loader/addStyles.js */ 163)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./dialog.less", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/less-loader/index.js!./dialog.less");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+
+/***/ 169:
+/*!**************************************************************************!*\
+  !*** ./~/css-loader!./~/less-loader!./app/components/dialog/dialog.less ***!
+  \**************************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(/*! ./../../../~/css-loader/lib/css-base.js */ 162)();
+	// imports
+	
+	
+	// module
+	exports.push([module.id, ".dialog-mask {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(255, 255, 255, 0);\n  top: 0;\n  left: 0;\n  z-index: 9999;\n}\n.dialog {\n  position: absolute;\n  width: 40%;\n  height: auto;\n  z-index: 999;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  border: 1px solid lightgreen;\n  border-radius: 5px;\n}\n.dialog-header {\n  background-color: lightgreen;\n  height: 40px;\n  position: relative;\n  cursor: move;\n  color: #fff;\n  line-height: 40px;\n  padding: 0 10px;\n}\n.dialog-header h3 {\n  display: inline-block;\n  padding: 0;\n  margin: 0;\n}\n.close-icon {\n  font-size: 28px;\n  width: 40px;\n  height: 100%;\n  color: #fff;\n  display: inline-block;\n  vertical-align: middle;\n  text-align: center;\n  line-height: 40px;\n  position: absolute;\n  right: 0;\n  cursor: pointer;\n}\n.dialog-body {\n  padding: 20px;\n  background-color: #fff;\n}\n.dialog-footer {\n  background-color: lightgreen;\n  height: 50px;\n  line-height: 50px;\n  text-align: right;\n}\n.button {\n  border-radius: 2px;\n  background-color: #fff;\n  height: 30px;\n  line-height: 30px;\n  display: inline-block;\n  padding: 0 10px;\n  margin: 0 8px;\n  cursor: pointer;\n}\n", ""]);
+	
+	// exports
+
+
+/***/ },
+
+/***/ 170:
+/*!*********************************!*\
+  !*** ./app/components/Drag.jsx ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = undefined;
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Drag = function (_React$Component) {
+	    _inherits(Drag, _React$Component);
+	
+	    function Drag(props) {
+	        _classCallCheck(this, Drag);
+	
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Drag).call(this, props));
+	    }
+	
+	    _createClass(Drag, [{
+	        key: 'render',
+	        value: function render() {
+	            var style = {
+	                position: 'absolute',
+	                left: 0,
+	                top: 0,
+	                background: 'yellow',
+	                border: '1px solid green',
+	                padding: '20px'
+	            };
+	
+	            return _react2.default.createElement(
+	                'div',
+	                { ref: 'target', style: style },
+	                _react2.default.createElement(
+	                    'h3',
+	                    { ref: 'drag' },
+	                    'Drag me'
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    'Moving...... Moving...... Moving...... Moving...... Moving...... Moving......'
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.drag(this.refs.drag, this.refs.target);
+	        }
+	    }, {
+	        key: 'drag',
+	        value: function drag(target, moveElement) {
+	            var isMousedown = false;
+	            var pos = [];
+	
+	            var mousedownHandle = function mousedownHandle(e) {
+	                console.log(':) mousedownHandle');
+	                isMousedown = true;
+	                console.log(e);
+	                pos = [e.pageX, e.pageY];
+	                document.addEventListener('mousemove', mousemoveHandle, false);
+	                document.addEventListener('mouseup', mouseupHandle, false);
+	            };
+	            var mousemoveHandle = function mousemoveHandle(e) {
+	                if (isMousedown) {
+	                    var distance = [e.pageX - pos[0], e.pageY - pos[1]];
+	                    var style = window.getComputedStyle(moveElement);
+	                    var rectBox = moveElement.getBoundingClientRect();
+	                    var offset = [parseFloat(style.left), parseFloat(style.top)];
+	                    // var offset = [rectBox.left, rectBox.top];
+	                    var left = offset[0] + distance[0];
+	                    var top = offset[1] + distance[1];
+	
+	                    if (rectBox.left + distance[0] <= 0) {
+	                        left -= rectBox.left + distance[0];
+	                    }
+	
+	                    if (rectBox.left + distance[0] > window.innerWidth - rectBox.width) {
+	                        left -= rectBox.left + distance[0] - (window.innerWidth - rectBox.width);
+	                    }
+	
+	                    if (rectBox.top + distance[1] <= 0) {
+	                        top -= rectBox.top + distance[1];
+	                    }
+	
+	                    if (rectBox.top + distance[1] > window.innerHeight - rectBox.height) {
+	                        top -= rectBox.top + distance[1] - (window.innerHeight - rectBox.height);
+	                    }
+	
+	                    // left = Math.max(left, 0);
+	                    // left = Math.min(left, window.innerWidth - rectBox.width);
+	
+	                    // top = Math.max(top, 0);
+	                    // top = Math.min(top, window.innerHeight - rectBox.height);
+	
+	                    moveElement.style.left = left + 'px';
+	                    moveElement.style.top = top + 'px';
+	                    pos = [e.pageX, e.pageY];
+	                    console.log(':) mousemoveHandle', distance);
+	                }
+	            };
+	            var mouseupHandle = function mouseupHandle(e) {
+	                console.log(': mouseupHandle');
+	                pos = [e.pageX, e.pageY];
+	                isMousedown = false;
+	                document.removeEventListener('mousemove', mousemoveHandle);
+	                document.removeEventListener('mouseup', mouseupHandle);
+	            };
+	            target.addEventListener('mousedown', mousedownHandle, false);
+	            // document.addEventListener('mouseup', mouseupHandle, false);
+	        }
+	    }]);
+	
+	    return Drag;
+	}(_react2.default.Component);
+	
+	exports.default = Drag;
+
+/***/ },
+
+/***/ 171:
+/*!*********************************!*\
+  !*** ./app/components/Note.jsx ***!
+  \*********************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.default = undefined;
+	
+	var _react = __webpack_require__(/*! react */ 2);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Note = function (_React$Component) {
+		_inherits(Note, _React$Component);
+	
+		function Note(props) {
+			_classCallCheck(this, Note);
+	
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Note).call(this, props));
+	
+			_this.renderNote = function () {
+				return _react2.default.createElement(
+					'div',
+					{ onClick: _this.edit },
+					_react2.default.createElement(
+						'span',
+						null,
+						_this.props.task
+					),
+					_this.props.onDelete ? _this.renderDelete() : null
+				);
+			};
+	
+			_this.renderEdit = function () {
+				return _react2.default.createElement('input', { type: 'text',
+					autoFocus: true,
+					placeholder: _this.props.task,
+					onBlur: _this.finishEdit,
+					onKeyPress: _this.checkEnter });
+			};
+	
+			_this.renderDelete = function () {
+				return _react2.default.createElement(
+					'button',
+					{ onClick: _this.props.onDelete },
+					'x'
+				);
+			};
+	
+			_this.edit = function () {
+				_this.setState({
+					editing: true
+				});
+			};
+	
+			_this.checkEnter = function (e) {
+				debugger;
+				if (e.key === 'Enter') {
+					_this.finishEdit(e);
+				}
+			};
+	
+			_this.finishEdit = function (e) {
+				debugger;
+				if (_this.props.onEdit) {
+					_this.props.onEdit(e.target.value);
+				}
+	
+				_this.setState({
+					editing: false
+				});
+			};
+	
+			_this.state = {
+				editing: false
+			};
+			return _this;
+		}
+	
+		_createClass(Note, [{
+			key: 'render',
+			value: function render() {
+				if (this.state.editing) {
+					return this.renderEdit();
+				}
+	
+				return this.renderNote();
+			}
+		}]);
+	
+		return Note;
+	}(_react2.default.Component);
+	
+	exports.default = Note;
 
 /***/ }
 

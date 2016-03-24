@@ -6,12 +6,12 @@ webpackJsonp([6,3],{
   \*********************/
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(/*! /Users/baidu/Desktop/Demo/ReactApp/app/views/Message.jsx */233);
+	module.exports = __webpack_require__(/*! /Users/baidu/Desktop/Demo/ReactApp/app/views/Message.jsx */239);
 
 
 /***/ },
 
-/***/ 233:
+/***/ 239:
 /*!*******************************!*\
   !*** ./app/views/Message.jsx ***!
   \*******************************/

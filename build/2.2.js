@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 226:
+/***/ 233:
 /*!*****************************!*\
   !*** ./app/views/Inbox.jsx ***!
   \*****************************/
@@ -19,11 +19,11 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Notes = __webpack_require__(/*! ../components/Notes */ 227);
+	var _Notes = __webpack_require__(/*! ../components/Notes */ 234);
 	
 	var _Notes2 = _interopRequireDefault(_Notes);
 	
-	var _Cube = __webpack_require__(/*! ../components/cube/Cube */ 229);
+	var _Cube = __webpack_require__(/*! ../components/cube/Cube */ 235);
 	
 	var _Cube2 = _interopRequireDefault(_Cube);
 	
@@ -125,7 +125,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 227:
+/***/ 234:
 /*!**********************************!*\
   !*** ./app/components/Notes.jsx ***!
   \**********************************/
@@ -141,7 +141,7 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Note = __webpack_require__(/*! ./Note.jsx */ 228);
+	var _Note = __webpack_require__(/*! ./Note.jsx */ 171);
 	
 	var _Note2 = _interopRequireDefault(_Note);
 	
@@ -170,119 +170,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 228:
-/*!*********************************!*\
-  !*** ./app/components/Note.jsx ***!
-  \*********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = undefined;
-	
-	var _react = __webpack_require__(/*! react */ 2);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Note = function (_React$Component) {
-		_inherits(Note, _React$Component);
-	
-		function Note(props) {
-			_classCallCheck(this, Note);
-	
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Note).call(this, props));
-	
-			_this.renderNote = function () {
-				return _react2.default.createElement(
-					'div',
-					{ onClick: _this.edit },
-					_react2.default.createElement(
-						'span',
-						null,
-						_this.props.task
-					),
-					_this.props.onDelete ? _this.renderDelete() : null
-				);
-			};
-	
-			_this.renderEdit = function () {
-				return _react2.default.createElement('input', { type: 'text',
-					autoFocus: true,
-					placeholder: _this.props.task,
-					onBlur: _this.finishEdit,
-					onKeyPress: _this.checkEnter });
-			};
-	
-			_this.renderDelete = function () {
-				return _react2.default.createElement(
-					'button',
-					{ onClick: _this.props.onDelete },
-					'x'
-				);
-			};
-	
-			_this.edit = function () {
-				_this.setState({
-					editing: true
-				});
-			};
-	
-			_this.checkEnter = function (e) {
-				debugger;
-				if (e.key === 'Enter') {
-					_this.finishEdit(e);
-				}
-			};
-	
-			_this.finishEdit = function (e) {
-				debugger;
-				if (_this.props.onEdit) {
-					_this.props.onEdit(e.target.value);
-				}
-	
-				_this.setState({
-					editing: false
-				});
-			};
-	
-			_this.state = {
-				editing: false
-			};
-			return _this;
-		}
-	
-		_createClass(Note, [{
-			key: 'render',
-			value: function render() {
-				if (this.state.editing) {
-					return this.renderEdit();
-				}
-	
-				return this.renderNote();
-			}
-		}]);
-	
-		return Note;
-	}(_react2.default.Component);
-	
-	exports.default = Note;
-
-/***/ },
-
-/***/ 229:
+/***/ 235:
 /*!**************************************!*\
   !*** ./app/components/cube/Cube.jsx ***!
   \**************************************/
@@ -301,7 +189,7 @@ webpackJsonp([2],{
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	__webpack_require__(/*! ./cube.less */ 230);
+	__webpack_require__(/*! ./cube.less */ 236);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -348,7 +236,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 230:
+/***/ 236:
 /*!***************************************!*\
   !*** ./app/components/cube/cube.less ***!
   \***************************************/
@@ -357,7 +245,7 @@ webpackJsonp([2],{
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/less-loader!./cube.less */ 231);
+	var content = __webpack_require__(/*! !./../../../~/css-loader!./../../../~/less-loader!./cube.less */ 237);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(/*! ./../../../~/style-loader/addStyles.js */ 163)(content, {});
@@ -378,7 +266,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 231:
+/***/ 237:
 /*!**********************************************************************!*\
   !*** ./~/css-loader!./~/less-loader!./app/components/cube/cube.less ***!
   \**********************************************************************/
