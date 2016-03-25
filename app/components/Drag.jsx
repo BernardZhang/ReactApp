@@ -12,7 +12,8 @@ export default class Drag extends React.Component {
             top: 0,
             background: 'yellow',
             border: '1px solid green',
-            padding: '20px'
+            padding: '20px',
+            width: '40%'
         };
 
         return (
@@ -45,46 +46,51 @@ export default class Drag extends React.Component {
             MOUSEUP: isTouch ? 'touchend' : 'mouseup'
         };
         var getPosition = function (e) {
-            return {
-                pageX: e.pageX || e.touches[0].pageX,
-                pageY: e.pageY || e.touches[0].pageY
-            }
+            return 'ontouchstart' in document ? e.touches[0] : e;
         };
 
         var mousedownHandle = function (e) {
-            console.log(':) mousedownHandle');
+            e.preventDefault();
             isMousedown = true;
             console.log(e);
             var posObj = getPosition(e);
-            var pos = [posObj.pageX, posObj.pageY];
+            pos = [posObj.pageX, posObj.pageY];
+            console.log(':) mousedownHandle pos', pos);
             document.addEventListener(EVENTS.MOUSEMOVE, mousemoveHandle, false);
             document.addEventListener(EVENTS.MOUSEUP, mouseupHandle, false);
         };
         var mousemoveHandle = function (e) {
+            e.preventDefault();
             if (isMousedown) {
                 var posObj = getPosition(e);
                 var distance = [posObj.pageX - pos[0], posObj.pageY - pos[1]];
                 var style = window.getComputedStyle(moveElement);
                 var rectBox = moveElement.getBoundingClientRect();
                 var offset = [parseFloat(style.left), parseFloat(style.top)];
-                // var offset = [rectBox.left, rectBox.top];
+                var translate = {
+                    x: offset[0] - rectBox.left,
+                    y: offset[1] - rectBox.top
+                };
                 var left = offset[0] + distance[0];
                 var top = offset[1] + distance[1];
+              
 
-                if (rectBox.left + distance[0] <= 0) {
-                    left -= rectBox.left + distance[0];
+                if (left <= translate.x) {
+                    left = translate.x;
+                    console.log(left);
                 }
 
-                if (rectBox.left + distance[0] > window.innerWidth - rectBox.width) {
-                    left -= rectBox.left + distance[0] - (window.innerWidth - rectBox.width);
+                if (left > window.innerWidth - rectBox.width + translate.x) {
+                    left = window.innerWidth - rectBox.width + translate.x;
+                    console.log('left:' + left);
                 }
 
-                if (rectBox.top + distance[1] <= 0) {
-                    top -= rectBox.top + distance[1];
+                if (top <= translate.y) {
+                    top = translate.y;
                 }
 
-                if (rectBox.top + distance[1] > window.innerHeight - rectBox.height) {
-                    top -= rectBox.top + distance[1] - (window.innerHeight - rectBox.height);
+                if (top > window.innerHeight - rectBox.height + translate.y) {
+                    top = window.innerHeight - rectBox.height + translate.y;
                 }
 
                 // left = Math.max(left, 0);
@@ -96,16 +102,20 @@ export default class Drag extends React.Component {
                 moveElement.style.left = left + 'px';
                 moveElement.style.top = top + 'px';
                 pos = [posObj.pageX, posObj.pageY];
-                console.log(':) mousemoveHandle', distance);
+                console.log('pos', pos);
+                console.log(':) mousemoveHandle', distance, offset, [left, top]);
             }
         };
         var mouseupHandle = function (e) {
+            e.preventDefault();
             console.log(': mouseupHandle');
             isMousedown = false;
             document.removeEventListener(EVENTS.MOUSEMOVE, mousemoveHandle);
             document.removeEventListener(EVENTS.MOUSEUP, mouseupHandle);
         };
         target.addEventListener(EVENTS.MOUSEDOWN, mousedownHandle, false);
+        // document.addEventListener(EVENTS.MOUSEMOVE, mousemoveHandle, false);
+        // document.addEventListener(EVENTS.MOUSEUP, mouseupHandle, false);
         // document.addEventListener('mouseup', mouseupHandle, false);
     }
 }

@@ -140,6 +140,9 @@ webpackJsonp([0],{
 	    }, {
 	        key: 'onSelect',
 	        value: function onSelect(node) {
+	            // throw {
+	            //     msg: 'error'
+	            // };
 	            this.setState({
 	                mindmap: this.state.mindmap,
 	                editDialog: {
@@ -148,6 +151,7 @@ webpackJsonp([0],{
 	                    content: _react2.default.createElement(_Note2.default, { task: node.name })
 	                }
 	            });
+	            // alert('after error');
 	        }
 	    }, {
 	        key: 'onEdit',
@@ -1188,7 +1192,8 @@ webpackJsonp([0],{
 	                top: 0,
 	                background: 'yellow',
 	                border: '1px solid green',
-	                padding: '20px'
+	                padding: '20px',
+	                width: '40%'
 	            };
 	
 	            return _react2.default.createElement(
@@ -1216,39 +1221,60 @@ webpackJsonp([0],{
 	        value: function drag(target, moveElement) {
 	            var isMousedown = false;
 	            var pos = [];
+	            var isTouch = 'ontouchstart' in document;
+	            console.log(':) isTouch' + isTouch);
+	            var EVENTS = {
+	                MOUSEDOWN: isTouch ? 'touchstart' : 'mousedown',
+	                MOUSEMOVE: isTouch ? 'touchmove' : 'mousemove',
+	                MOUSEUP: isTouch ? 'touchend' : 'mouseup'
+	            };
+	            var getPosition = function getPosition(e) {
+	                return 'ontouchstart' in document ? e.touches[0] : e;
+	            };
 	
 	            var mousedownHandle = function mousedownHandle(e) {
+	                e.preventDefault();
 	                console.log(':) mousedownHandle');
 	                isMousedown = true;
 	                console.log(e);
-	                pos = [e.pageX, e.pageY];
-	                document.addEventListener('mousemove', mousemoveHandle, false);
-	                document.addEventListener('mouseup', mouseupHandle, false);
+	                var posObj = getPosition(e);
+	                pos = [posObj.pageX, posObj.pageY];
+	                document.addEventListener(EVENTS.MOUSEMOVE, mousemoveHandle, false);
+	                document.addEventListener(EVENTS.MOUSEUP, mouseupHandle, false);
 	            };
 	            var mousemoveHandle = function mousemoveHandle(e) {
+	                e.preventDefault();
 	                if (isMousedown) {
-	                    var distance = [e.pageX - pos[0], e.pageY - pos[1]];
+	                    var posObj = getPosition(e);
+	                    var distance = [posObj.pageX - pos[0], posObj.pageY - pos[1]];
 	                    var style = window.getComputedStyle(moveElement);
 	                    var rectBox = moveElement.getBoundingClientRect();
 	                    var offset = [parseFloat(style.left), parseFloat(style.top)];
 	                    // var offset = [rectBox.left, rectBox.top];
+	                    var translate = {
+	                        x: offset[0] - rectBox.left,
+	                        y: offset[1] - rectBox.top
+	                    };
+	                    console.log(translate);
 	                    var left = offset[0] + distance[0];
 	                    var top = offset[1] + distance[1];
 	
-	                    if (rectBox.left + distance[0] <= 0) {
-	                        left -= rectBox.left + distance[0];
+	                    if (left <= translate.x) {
+	                        left = translate.x;
+	                        console.log(left);
 	                    }
 	
-	                    if (rectBox.left + distance[0] > window.innerWidth - rectBox.width) {
-	                        left -= rectBox.left + distance[0] - (window.innerWidth - rectBox.width);
+	                    if (left > window.innerWidth - rectBox.width + translate.x) {
+	                        left = window.innerWidth - rectBox.width + translate.x;
+	                        console.log('left:' + left);
 	                    }
 	
-	                    if (rectBox.top + distance[1] <= 0) {
-	                        top -= rectBox.top + distance[1];
+	                    if (top <= translate.y) {
+	                        top = translate.y;
 	                    }
 	
-	                    if (rectBox.top + distance[1] > window.innerHeight - rectBox.height) {
-	                        top -= rectBox.top + distance[1] - (window.innerHeight - rectBox.height);
+	                    if (top > window.innerHeight - rectBox.height + translate.y) {
+	                        top = window.innerHeight - rectBox.height + translate.y;
 	                    }
 	
 	                    // left = Math.max(left, 0);
@@ -1259,18 +1285,20 @@ webpackJsonp([0],{
 	
 	                    moveElement.style.left = left + 'px';
 	                    moveElement.style.top = top + 'px';
-	                    pos = [e.pageX, e.pageY];
-	                    console.log(':) mousemoveHandle', distance);
+	                    pos = [posObj.pageX, posObj.pageY];
+	                    console.log(':) mousemoveHandle', distance, offset, [left, top]);
 	                }
 	            };
 	            var mouseupHandle = function mouseupHandle(e) {
+	                e.preventDefault();
 	                console.log(': mouseupHandle');
-	                pos = [e.pageX, e.pageY];
 	                isMousedown = false;
-	                document.removeEventListener('mousemove', mousemoveHandle);
-	                document.removeEventListener('mouseup', mouseupHandle);
+	                document.removeEventListener(EVENTS.MOUSEMOVE, mousemoveHandle);
+	                document.removeEventListener(EVENTS.MOUSEUP, mouseupHandle);
 	            };
-	            target.addEventListener('mousedown', mousedownHandle, false);
+	            target.addEventListener(EVENTS.MOUSEDOWN, mousedownHandle, false);
+	            // document.addEventListener(EVENTS.MOUSEMOVE, mousemoveHandle, false);
+	            // document.addEventListener(EVENTS.MOUSEUP, mouseupHandle, false);
 	            // document.addEventListener('mouseup', mouseupHandle, false);
 	        }
 	    }]);

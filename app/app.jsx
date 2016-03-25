@@ -34,3 +34,7 @@ ReactDom.render(
     document.getElementById('app')
 );
 
+window.onerror = function () {
+    console.log(arguments);
+    alert(JSON.stringify(arguments));
+};

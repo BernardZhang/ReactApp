@@ -86,6 +86,9 @@ export default class About extends React.Component {
 	}
 
     onSelect(node) {
+        // throw {
+        //     msg: 'error'
+        // };
         this.setState({
             mindmap: this.state.mindmap,
             editDialog: {
@@ -94,6 +97,7 @@ export default class About extends React.Component {
                 content: <Node task={node.name} />
             }
         });
+        // alert('after error');
     }
 
     onEdit(node) {
